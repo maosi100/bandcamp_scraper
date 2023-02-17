@@ -136,3 +136,6 @@ dmypy.json
 .ruff_cache/
 
 # End of https://www.toptal.com/developers/gitignore/api/osx,python
+
+# Project individual files
+project_plan.md
