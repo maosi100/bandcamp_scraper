@@ -1,0 +1,30 @@
+# swagger.yml
+
+openapi: 3.0.0
+info:
+  title: "Bandcamp Emails Flask REST API"
+  description: "Access Bandcamp Releases from Email"
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+paths:
+  /releases:
+    get:
+      operationId: "releases.read_all"
+      tags:
+        - "Releases"
+      summary: "Read the list of all releases"
+      responses:
+        "200":
+          description: "Successfully read releases list"
+  /release:
+    get:
+      operationId: "releases.oldest"
+      tags:
+        - "Releases"
+      summary: "Get the oldest release"
+      responses:
+        "200":
+          description: "Successfully returned oldest release"
