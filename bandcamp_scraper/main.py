@@ -2,6 +2,7 @@ from email_scraper import create_database
 import json
 from flask import Flask, render_template
 
+
 # Find and open database
 def find_database():
     try:
@@ -60,7 +61,6 @@ def main():
         return render_template("leave.html")
 
     app.run(host="0.0.0.0", port=8000, debug=True)
-
 
 
 if __name__ == "__main__":
