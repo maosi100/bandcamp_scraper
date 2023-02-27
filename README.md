@@ -32,8 +32,9 @@ all revelevant release information containted within an HTML iframe.
     * All flags will be written to the database.json file to remembe$r which releases have been viewed
 
 ## Additional Information
-To enhance the digging experience I recommend to additionally use [https://github.com/sabjorn/BandcampEnhancementSuite]
-(Bandcamp Enhancement Suite). However to enable this addon within HTML iframes the manifest.json File
+To enhance the digging experience I recommend to additionally use
+[https://github.com/sabjorn/BandcampEnhancementSuite](Bandcamp Enhancement Suite). 
+However to enable this addon within HTML iframes the manifest.json File
 needs to include:
 ```
 "content_script": [
