@@ -33,7 +33,7 @@ all revelevant release information containted within an HTML iframe.
 
 ## Additional Information
 To enhance the digging experience I recommend to additionally use
-[https://github.com/sabjorn/BandcampEnhancementSuite](Bandcamp Enhancement Suite). 
+[Bandcamp Enhancement Suite](https://github.com/sabjorn/BandcampEnhancementSuite). 
 However to enable this addon within HTML iframes the manifest.json File
 needs to include:
 ```
