@@ -27,11 +27,17 @@ def create_database(path):
                 input_stripped = search("^.+base64(.+)$", str(input).replace("\n", "")) # Strip the header data for proper decoding
                 input = b64decode(input_stripped.groups(1)[0]).decode('utf-8')
 
-            if "just released" in input:
-                if match := search(r"<a href=\"(.+)\">", str(input)):
+            if "iso-8859-1" in str(input):
+                input_stripped = search("^.+iso-8859-1(.+)$", str(input).replace("\n", ""))
+                input = str(input_stripped.groups(1)[0]).encode("utf-8")
+
+            if "just released" in str(input):
+                if match := search(r"<a href=\"(.+)\">", str(input)) or search(r"<a href=3D\"(.+)\">", str(input)):
                     url = match.groups(1)
                     database.append([mail["Date"], url[0], "0"])
-                    database.sort(key=lambda x: datetime.strptime(x[0], "%a, %d %b %Y %H:%M:%S %z"))
+            
+
+        database.sort(key=lambda x: datetime.strptime(x[0], "%a, %d %b %Y %H:%M:%S %z"))
 
     json_object = json.dumps(database, indent=4)
 
