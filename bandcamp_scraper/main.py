@@ -2,9 +2,19 @@ from email_scraper import create_database
 import json
 from flask import Flask, render_template
 
+# Retrieve database file
+def retrieve_database():
+    while True:
+        mbox_path = input("Please enter path to valid .mbox file: ")
+        if not validate_mbox(mbox_path):
+            print ("File invalid, try again.")
+        else:
+            break
+    if not create_database(mbox_path):
+        exit("Could not create database")
 
-# Find and open database
-def find_database():
+# Open database
+def open_database():
     try:
         with open("./database.json", "r") as file:
             database_json = json.load(file)
@@ -39,15 +49,10 @@ def save_state(database):
 
 def main():
     # Access the release database
-    database = find_database()
-
+    database = open_database()
     if not database:
-        mbox_path = input("Please enter path to valid .mbox file: ")
-        if not validate_mbox(mbox_path):
-            exit("Please enter valid mbox file")
-        if not create_database(mbox_path):
-            exit("Could not create database")
-        database = find_database()
+        retrieve_database()
+        database = open_database()
     
     # Start Flask for application front end
     app = Flask(__name__)
