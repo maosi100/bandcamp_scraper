@@ -24,6 +24,8 @@ def get_release(database):
         if item[2] == "0":
             item[2] = "1"
             return item[1]
+        else:
+            return False
 
 def save_state(database):
     try:
@@ -53,7 +55,10 @@ def main():
     @app.route("/")
     def home():
         release = get_release(database)
-        return render_template("home.html", release=release)
+        if release:
+            return render_template("home.html", release=release)
+        else:
+            return render_template("exceeded.html")
 
     @app.route("/leave")
     def leave():
