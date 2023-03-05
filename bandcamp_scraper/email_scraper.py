@@ -30,8 +30,8 @@ def create_database(path):
             if "just released" in input:
                 if match := search(r"<a href=\"(.+)\">", str(input)):
                     url = match.groups(1)
-                    database.append([mail["Date"], url[0], "0"])
-                    database.sort(key=lambda x: datetime.strptime(x[0], "%a, %d %b %Y %H:%M:%S %z"))
+                    database.append({"Date": mail["Date"], "Url": url[0], "Flag": "0"})
+                    database.sort(key=lambda x: datetime.strptime(x["Date"], "%a, %d %b %Y %H:%M:%S %z"))
 
     json_object = json.dumps(database, indent=4)
 

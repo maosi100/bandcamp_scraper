@@ -31,9 +31,9 @@ def validate_mbox(path):
 # Get latest release from database
 def get_release(database): 
     for item in database:
-        if item[2] == "0":
-            item[2] = "1"
-            return item[1]
+        if item["Flag"] == "0":
+            item["Flag"] = "1"
+            return item["Url"]
         else:
             return False
 
