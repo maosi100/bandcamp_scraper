@@ -22,7 +22,6 @@ def create_database(path):
     except IsADirectoryError:
         return False
     
-    i = 0
     database = []
     for mail in mbox:
         if "release" in mail["Subject"]:
@@ -40,7 +39,8 @@ def create_database(path):
                 if match := search(r"<a href=\"(.+)\">", str(input)) or search(r"<a href=3D\"(.+)\">", str(input)):
                     url = match.groups(1)
                     database.append({"Count": 1, "Date": mail["Date"], "Url": url[0], "Flag": "0"})
-                    database.sort(key=lambda x: datetime.strptime(x["Date"], "%a, %d %b %Y %H:%M:%S %z"))
+            
+        database.sort(key=lambda x: datetime.strptime(x["Date"], "%a, %d %b %Y %H:%M:%S %z"))
     
     add_increment(database)
     json_object = json.dumps(database, indent=4)
