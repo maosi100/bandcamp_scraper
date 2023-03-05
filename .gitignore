@@ -140,3 +140,4 @@ dmypy.json
 # Project individual files
 project_plan.md
 database.json
+python-version
