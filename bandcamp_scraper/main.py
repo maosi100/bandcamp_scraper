@@ -33,10 +33,10 @@ def get_release(database):
     for item in database:
         if item["Flag"] == "0":
             item["Flag"] = "1"
-            return item["Url"]
-        else:
-            return False
+            return item["Url"], item["Count"]
+    return False
 
+# Save changes to database file
 def save_state(database):
     try:
         with open("./database.json", "w") as file:
@@ -46,6 +46,10 @@ def save_state(database):
     except FileNotFoundError:
         return False
 
+# Get the item count of database
+def count_items(database):
+    return database[-1]["Count"]
+
 
 def main():
     # Access the release database
@@ -53,15 +57,20 @@ def main():
     if not database:
         retrieve_database()
         database = open_database()
-    
+   
+    overall = count_items(database)
+
     # Start Flask for application front end
     app = Flask(__name__)
 
     @app.route("/")
     def home():
-        release = get_release(database)
+        return_values = get_release(database)
+        release = return_values[0]
+        count = return_values[1]
+        
         if release:
-            return render_template("home.html", release=release)
+            return render_template("home.html", release=release, count=count, overall=overall)
         else:
             return render_template("exceeded.html")
 

@@ -2,16 +2,18 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Bandcamp Email Interface</title>
-</head>
-<body>
-    <div>
-        <button onclick="window.location.href='./leave';">Save and quit</button>
-    </div>
-    <div>
-        <iframe src={{ release }} height="1200" width="1000"></iframe>
-    </div>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Bandcamp Email Interface</title>
+    </head>
+    <body>
+        <div>
+            <button onclick="window.location.href='./leave';">Save and quit</button>
+        </div>
+        <div>
+            <p>Release {{ count }} of overall {{ overall }}</p>
+        <div>
+            <iframe src={{ release }} height="1200" width="1000"></iframe>
+        </div>
+    </body>
 </html>
