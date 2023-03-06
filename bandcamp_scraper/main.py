@@ -1,6 +1,6 @@
 from email_scraper import create_database
 import json
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 # Retrieve database file
 def retrieve_database():
@@ -50,6 +50,15 @@ def save_state(database):
 def count_items(database):
     return database[-1]["Count"]
 
+# Set back database by two
+def set_back(database):
+    for item in database:
+        if item["Flag"] == "0":
+            count = item["Count"] - 1
+            database[(count - 1)]["Flag"] = "0"
+            database[(count - 2)]["Flag"] = "0"
+            return True
+
 
 def main():
     # Access the release database
@@ -63,16 +72,28 @@ def main():
     # Start Flask for application front end
     app = Flask(__name__)
 
-    @app.route("/")
+    @app.route("/", methods=["GET", "POST"])
     def home():
-        return_values = get_release(database)
-        release = return_values[0]
-        count = return_values[1]
-        
-        if release:
-            return render_template("home.html", release=release, count=count, overall=overall)
-        else:
-            return render_template("exceeded.html")
+        if request.method == "GET":
+            return_values = get_release(database)
+            release = return_values[0]
+            count = return_values[1]
+            
+            if release:
+                return render_template("home.html", release=release, count=count, overall=overall)
+            else:
+                return render_template("exceeded.html")
+
+        if request.method == "POST":
+            set_back(database)
+            return_values = get_release(database)
+            release = return_values[0]
+            count = return_values[1]
+            
+            if release:
+                return render_template("home.html", release=release, count=count, overall=overall)
+            else:
+                return render_template("exceeded.html")
 
     @app.route("/leave")
     def leave():

@@ -11,6 +11,16 @@
             <button onclick="window.location.href='./leave';">Save and quit</button>
         </div>
         <div>
+            <form action="/" method="post">
+                <button type="submit">Go Back one Release</button>
+            </form>
+        </div>
+        <div>
+            <form action="/" method="get">
+                <button type="submit">Resume Browsing</button>
+            </form>
+        </div>
+        <div>
             <p>Release {{ count }} of overall {{ overall }}</p>
         <div>
             <iframe src={{ release }} height="1200" width="1000"></iframe>
