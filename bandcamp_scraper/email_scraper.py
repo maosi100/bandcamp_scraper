@@ -6,17 +6,14 @@ from base64 import b64decode
 import json
 from datetime import datetime
 
-# Factory to create email.message.EmailMessage instead of mailbox.Message
 def make_EmailMessage(file):
     return email.message_from_binary_file(file, policy=policy.default)
 
-# Add counter to the email database
 def add_increment(file):
     for i, item in enumerate(file, 1):
         item["Count"] = i
     return True
 
-# Set up the mailbox using the factory above
 def create_database(path):
     try:
         mbox = mailbox.mbox(path, factory=make_EmailMessage)

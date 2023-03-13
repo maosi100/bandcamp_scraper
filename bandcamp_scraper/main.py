@@ -1,13 +1,28 @@
+import argparse
 from flask import Flask, render_template, request
 from database import Database
 
+
+
 def main():
-    # Access the release database
-    database = Database("/Users/maximosipovs/Downloads/alte mailbox/Bandcamp all.mbox/mbox")
+    
+    parser = argparse.ArgumentParser(
+        description="Bandcamp release email visualizer"
+    )
+    parser.add_argument(
+        '-i',
+        '--input',
+        help="Specify an input .mbox file to extract Bandcamp emails"
+            "Default=None, application will access available database.json file",
+        type=str,
+        default=None
+    )    
+    args = parser.parse_args()
+
+    database = Database(args.input)
    
     overall = database.length
 
-    # Start Flask for application front end
     app = Flask(__name__)
 
     @app.route("/", methods=["GET", "POST"])

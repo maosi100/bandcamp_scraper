@@ -5,8 +5,9 @@ from sys import exit
 class Database:
 
     def __init__(self, filepath=None):
-        if self.validate_filepath(filepath):
-            create_database(filepath)
+        if filepath:
+            if self.validate_filepath(filepath):
+                create_database(filepath)
 
         self.database = self.open_database()
         self.length = self.database[-1]["Count"]
