@@ -18,18 +18,24 @@ With this app new releases can easily be accessed directly by just refreshing th
 all revelevant release information containted within an HTML iframe.
 
 ## Using the Application
-1. Create a local clone of this github repository
-2. Run the app via main.py within the Bandcamp_scraper directory
-    * Running for the first time the database.json file needs to be created
+Python 3.11 is required for this application
+
+1. Create a local clone of this github repository:
+2. Running the app for the first time a valid .mbox file needs to be provided for execution
     * Create a local export of your Apple Mail Inbox containing the Bandcamp emails
-    * Provide the filepath to this export (.mbox file) to the application
+    * Provide the filepath to the .mbox file when running the app: `python main.py ~/.../.../file.mbox` 
 3. The databse.json file is accessed to retrieve Bandcamp release links chronologically
 4. Flask will run the webapplication on localhost
 5. Access each release via the webapplication
-6. Refresh the page to load the next release
+
+* Refresh the page to load the next release
     * A flag is set after viewing each release so each release is only shown once
-7. To stop browsing use the "Save and quit" button
-    * All flags will be written to the database.json file to remembe$r which releases have been viewed
+* You can go back to previously viewed releases using the "Go back one release" button
+* If you want to continue browsing forwards you need to press the "Resume Browsing" button once
+    * Afterwards refreshing the page works again
+* To stop browsing use the "Save and quit" button
+    * All flags will be written to the database.json file to remember which releases have been viewed
+
 
 ## Additional Information
 To enhance the digging experience I recommend to additionally use
