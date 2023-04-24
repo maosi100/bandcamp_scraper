@@ -1,14 +1,12 @@
-import argparse
+from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
 from database import Database
 
-
-
-def main():
-    
-    parser = argparse.ArgumentParser(
+def extract_args() -> Namespace:
+    parser = ArgumentParser(
         description="Bandcamp release email visualizer"
     )
+
     parser.add_argument(
         '-i',
         '--input',
@@ -16,12 +14,16 @@ def main():
             "Default=None, application will access available database.json file",
         type=str,
         default=None
-    )    
-    args = parser.parse_args()
+    )
+
+    return parser.parse_args()
+
+def main():
+    args = extract_args()
 
     database = Database(args.input)
    
-    overall = database.length
+    database_length = database.length
 
     app = Flask(__name__)
 
@@ -33,7 +35,7 @@ def main():
             count = return_values[1]
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=overall)
+                return render_template("home.html", release=release, count=count, overall=database_length)
             else:
                 return render_template("exceeded.html")
 
@@ -44,7 +46,7 @@ def main():
             count = return_values[1]
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=overall)
+                return render_template("home.html", release=release, count=count, overall=database_length)
             else:
                 return render_template("exceeded.html")
 

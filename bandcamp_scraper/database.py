@@ -1,4 +1,4 @@
-from email_scraper import create_database
+from email_scraper import EmailScraper
 import json
 from sys import exit
 
@@ -6,11 +6,14 @@ class Database:
 
     def __init__(self, filepath=None):
         if filepath:
-            if self.validate_filepath(filepath):
-                create_database(filepath)
+            self.create_database(filepath)
 
         self.database = self.open_database()
         self.length = self.database[-1]["Count"]
+
+    def create_database(self, filepath: str):
+        if self.validate_filepath(filepath):
+            EmailScraper(filepath)
 
     @staticmethod
     def open_database():
@@ -23,7 +26,7 @@ class Database:
 
     @staticmethod
     def validate_filepath(filepath):
-        if "mbox" not in filepath[:-4]:
+        if ".mbox" not in filepath:
             raise ValueError("Could not retrieve .mbox file")
         return True
 
