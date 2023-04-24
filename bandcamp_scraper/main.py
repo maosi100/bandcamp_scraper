@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
-from database import Database
+from database_handler import Database
 
 def extract_args() -> Namespace:
     parser = ArgumentParser(
