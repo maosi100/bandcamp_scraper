@@ -18,12 +18,9 @@ def extract_args() -> Namespace:
 
     return parser.parse_args()
 
-def main():
+def main() -> None:
     args = extract_args()
-
     database = Database(args.input)
-   
-    database_length = database.length
 
     app = Flask(__name__)
 
@@ -35,7 +32,7 @@ def main():
             count = return_values[1]
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=database_length)
+                return render_template("home.html", release=release, count=count, overall=database.length)
             else:
                 return render_template("exceeded.html")
 
@@ -46,7 +43,7 @@ def main():
             count = return_values[1]
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=database_length)
+                return render_template("home.html", release=release, count=count, overall=database.length)
             else:
                 return render_template("exceeded.html")
 

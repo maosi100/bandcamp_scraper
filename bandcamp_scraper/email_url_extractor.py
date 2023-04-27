@@ -1,25 +1,22 @@
+from typing import Union
 from re import search
 from base64 import b64decode
 import mailbox
 
 
 class EmailUrlExtractor:
-    def __init__(self, mailbox: mailbox.mbox) -> None:
-        self.mailbox = mailbox
-        self.database = list()
+    def run_extraction(self, mail: mailbox.mboxMessage) -> str:
+        email_body = self.extract_emails(mail)
+        return self.extract_urls(email_body)
 
-    def extract_emails(self):
-        count = 1
-        for mail in self.mailbox:
-            if "release" in mail["Subject"]:
-                email_body = str(mail.get_body(preferencelist=('html')))
+    def extract_emails(self, mail: mailbox.mboxMessage) -> Union[str, None]:
+        if "release" in mail["Subject"]:
+            email_body = str(mail.get_body(preferencelist=('html')))
 
-                if "base64" in email_body or "iso-8859" in email_body:
-                    email_body = self.decode_emails(email_body)
+            if "base64" in email_body or "iso-8859" in email_body:
+                email_body = self.decode_emails(email_body)
 
-                if url := self.extract_urls(email_body):
-                    self.database.append({"Count": count, "Date": mail["Date"], "Url": url[0], "Flag": "0"})
-                    count += 1
+            return str(email_body)
     
     @staticmethod
     def decode_emails(email_body):
