@@ -1,7 +1,8 @@
 from typing import Union
 from re import search
-from base64 import b64decode
 import mailbox
+
+from email_decoder import Base64Decoder, Iso88591Decoder
 
 
 class EmailUrlExtractor:
@@ -13,21 +14,12 @@ class EmailUrlExtractor:
         if "release" in mail["Subject"]:
             email_body = str(mail.get_body(preferencelist=('html')))
 
-            if "base64" in email_body or "iso-8859" in email_body:
-                email_body = self.decode_emails(email_body)
+            if "base64" in email_body:
+                email_body = Base64Decoder.decode_email(email_body)
+            if "iso-8859-1" in email_body:
+                email_body = Iso88591Decoder.decode_email(email_body)
 
             return str(email_body)
-    
-    @staticmethod
-    def decode_emails(email_body):
-        if "base64" in email_body:
-            stripped_body = search("^.+base64(.+)$", email_body.replace("\n", ""))
-            return b64decode(stripped_body.groups(1)[0]).decode('utf-8')
-
-        if "iso-8859-1" in email_body:
-            replaced_body = email_body.replace("\n", "").replace("3D", "")
-            stripped_body = search("^.+iso-8859-1(.+)$", replaced_body)
-            return str(stripped_body.groups(1)[0]).encode("utf-8")
     
     @staticmethod
     def extract_urls(email_body):

@@ -1,7 +1,7 @@
+from typing import IO, Any
 import mailbox
 import email
 from email import policy, message
-from typing import IO, Any
 
 
 class MailboxCreator:

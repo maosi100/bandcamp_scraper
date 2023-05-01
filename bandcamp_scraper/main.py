@@ -1,6 +1,8 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
-from database_handler import Database
+
+from database_handler import DatabaseHandler
+
 
 def extract_args() -> Namespace:
     parser = ArgumentParser(
@@ -20,7 +22,7 @@ def extract_args() -> Namespace:
 
 def main() -> None:
     args = extract_args()
-    database = Database(args.input)
+    database = DatabaseHandler(args.input)
 
     app = Flask(__name__)
 

@@ -4,9 +4,9 @@ from typing import Dict, Union
 
 from database_creator import DatabaseCreator
 
-class Database:
+class DatabaseHandler:
     def __init__(self, filepath: str) -> None:
-        if self._is_valid(filepath):
+        if self._is_mbox_file(filepath):
             DatabaseCreator(filepath)
 
         self.database = self.open_database()
@@ -31,13 +31,13 @@ class Database:
             print("Could not write database file")
             return False
 
-    def get_release(self) -> Union[tuple[str, int], None]: 
+    def get_next_release(self) -> Union[tuple[str, int], None]: 
         for item in self.database:
             if item["Flag"] == "0":
                 item["Flag"] = "1"
                 return item["Url"], item["Count"]
 
-    def set_back(self) -> None:
+    def reset_processing_flag(self) -> None:
         for item in self.database:
             if item["Flag"] == "0":
                 count = item["Count"] - 1
@@ -45,7 +45,7 @@ class Database:
                 self.database[(count - 2)]["Flag"] = "0"
 
     @staticmethod
-    def _is_valid(filepath) -> bool:
+    def _is_mbox_file(filepath) -> bool:
         if ".mbox" not in filepath:
             raise ValueError("Could not retrieve .mbox file")
         return True
