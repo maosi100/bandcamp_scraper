@@ -29,7 +29,7 @@ def main() -> None:
     @app.route("/", methods=["GET", "POST"])
     def home():
         if request.method == "GET":
-            return_values = database.get_release()
+            return_values = database.get_next_release()
             release = return_values[0]
             count = return_values[1]
             
