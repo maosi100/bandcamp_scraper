@@ -1,11 +1,10 @@
 import mailbox
 import email
-from email import policy, message
+from email import policy
 import json
 from re import search
-from typing import Union
 from datetime import datetime
-from typing import Dict, IO, Any
+from typing import Union, Dict
 
 from email_decoder import Base64Decoder, Iso88591Decoder
 
@@ -24,7 +23,7 @@ class DatabaseCreator:
             exit("mbox is a directory")
     
     @staticmethod
-    def _factory_EmailMessage(file: IO[Any]) -> message.Message:
+    def _factory_EmailMessage(file):
         return email.message_from_binary_file(file, policy=policy.default)
 
     def _append_entry_to_database(self) -> None:
@@ -32,7 +31,7 @@ class DatabaseCreator:
         for mail in self.mailbox:
             if "release" in mail["Subject"]:
                 mail_body = mail.get_body(preferencelist=('html')).as_string()
-                if url := self.run_extraction(mail_body):
+                if url := self._extract_URL(mail_body):
                     self.database.append({"Count": count, "Date": mail["Date"], "Url": url, "Flag": "0"})
                     count += 1
 
@@ -42,12 +41,12 @@ class DatabaseCreator:
         with open("database.json", "w") as outfile:
             outfile.write(json_object)
 
-    def run_extraction(self, mail: str) -> Union[str, None]:
+    def _extract_URL(self, mail: str) -> Union[str, None]:
         if "base64" in mail:
             mail = Base64Decoder.decode_email(mail)
         if "iso-8859-1" in mail:
             mail = Iso88591Decoder.decode_email(mail)
-
+        
         if "just released" in mail:
-            if match := search(r"<a href=\"(.+)\">", mail): 
+            if match := search(r"<a href=\"(.+)\">", mail):
                 return match.group(1)
