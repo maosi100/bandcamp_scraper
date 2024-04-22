@@ -41,7 +41,7 @@ def main() -> None:
 
         if request.method == "POST":
             database.reset_processing_flag()
-            return_values = database.get_release()
+            return_values = database.get_next_release()
             release = return_values[0]
             count = return_values[1]
             
