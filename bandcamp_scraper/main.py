@@ -24,37 +24,37 @@ def main() -> None:
     args = extract_args()
     database = DatabaseHandler(args.input)
 
-    app = Flask(__name__)
+    #app = Flask(__name__)
 
-    @app.route("/", methods=["GET", "POST"])
-    def home():
-        if request.method == "GET":
-            return_values = database.get_next_release()
-            release = return_values[0]
-            count = return_values[1]
-            
-            if release:
-                return render_template("home.html", release=release, count=count, overall=database.length)
-            else:
-                return render_template("exceeded.html")
+    #@app.route("/", methods=["GET", "POST"])
+    #def home():
+    #    if request.method == "GET":
+    #        return_values = database.get_next_release()
+    #        release = return_values[0]
+    #        count = return_values[1]
+    #        
+    #        if release:
+    #            return render_template("home.html", release=release, count=count, overall=database.length)
+    #        else:
+    #            return render_template("exceeded.html")
 
-        if request.method == "POST":
-            database.set_back()
-            return_values = database.get_release()
-            release = return_values[0]
-            count = return_values[1]
-            
-            if release:
-                return render_template("home.html", release=release, count=count, overall=database.length)
-            else:
-                return render_template("exceeded.html")
+    #    if request.method == "POST":
+    #        database.set_back()
+    #        return_values = database.get_release()
+    #        release = return_values[0]
+    #        count = return_values[1]
+    #        
+    #        if release:
+    #            return render_template("home.html", release=release, count=count, overall=database.length)
+    #        else:
+    #            return render_template("exceeded.html")
 
-    @app.route("/leave")
-    def leave():
-        database.save_state()
-        return render_template("leave.html")
+    #@app.route("/leave")
+    #def leave():
+    #    database.save_state()
+    #    return render_template("leave.html")
 
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    #app.run(host="0.0.0.0", port=8000, debug=True)
 
 
 if __name__ == "__main__":
