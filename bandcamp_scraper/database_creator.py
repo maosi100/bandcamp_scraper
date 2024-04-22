@@ -48,5 +48,5 @@ class DatabaseCreator:
             mail = Iso88591Decoder.decode_email(mail)
         
         if "just released" in mail:
-            if match := search(r"<a href=\"(.+)\">", mail):
+            if match := search(r'<a href="([^"]+)">', mail):
                 return match.group(1)
