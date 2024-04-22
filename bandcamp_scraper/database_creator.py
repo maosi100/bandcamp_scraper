@@ -14,6 +14,7 @@ class DatabaseCreator:
         self.database = list()
         self._append_entry_to_database(self.mailbox)
         self.database.sort(key=lambda x: datetime.strptime(x["Date"], "%a, %d %b %Y %H:%M:%S %z"))
+        self._add_counts()
         self._write_json_from_list(self.database)
     
     def create_mailbox(self, path: str) -> mailbox.mbox:
@@ -27,13 +28,11 @@ class DatabaseCreator:
         return email.message_from_binary_file(file, policy=policy.default)
     
     def _append_entry_to_database(self, mailbox: mailbox.mbox) -> None:
-        count = 1
         for mail in mailbox:
             if "release" in mail["Subject"]:
                 mail_body = mail.get_body(preferencelist=('html')).as_string()
                 if url := self._extract_URL(mail_body):
-                    self.database.append({"Count": count, "Date": mail["Date"], "Url": url, "Flag": "0"})
-                    count += 1
+                    self.database.append({"Count": 0, "Date": mail["Date"], "Url": url, "Flag": "0"})
     
     @staticmethod
     def _write_json_from_list(database: list[Dict]) -> None:
@@ -52,3 +51,7 @@ class DatabaseCreator:
         if "just released" in mail:
             if match := search(r'<a href="([^"]+)">', mail):
                 return match.group(1)
+
+    def _add_counts(self) -> None:
+        for i, item in enumerate(self.database, 1):
+            item["Count"] = i
