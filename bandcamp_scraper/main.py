@@ -1,6 +1,7 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
 
+from database_creator import DatabaseCreator
 from database_handler import DatabaseHandler
 
 
@@ -22,7 +23,8 @@ def extract_args() -> Namespace:
 
 def main() -> None:
     args = extract_args()
-    database = DatabaseHandler(args.input)
+    DatabaseCreator(args.input)
+    database = DatabaseHandler()
     overall = database.length
 
     app = Flask(__name__)

@@ -5,10 +5,7 @@ from typing import Dict, Union
 from database_creator import DatabaseCreator
 
 class DatabaseHandler:
-    def __init__(self, filepath: str) -> None:
-        if self._is_mbox_file(filepath):
-            DatabaseCreator(filepath)
-
+    def __init__(self) -> None:
         self.database = self.open_database()
         self.length = self.database[-1]["Count"]
 
@@ -44,8 +41,3 @@ class DatabaseHandler:
                 self.database[(count - 1)]["Flag"] = "0"
                 self.database[(count - 2)]["Flag"] = "0"
 
-    @staticmethod
-    def _is_mbox_file(filepath) -> bool:
-        if ".mbox" not in filepath:
-            raise ValueError("Could not retrieve .mbox file")
-        return True
