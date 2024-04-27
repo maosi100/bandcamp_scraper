@@ -1,7 +1,8 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
 
-from scrape_processor import ScrapeProcessor
+from mailbox_reader import MailboxReader
+from database_creator import DatabaseCreator
 from database_handler import DatabaseHandler
 
 def extract_args() -> Namespace:
@@ -22,7 +23,8 @@ def extract_args() -> Namespace:
 
 def main() -> None:
     args = extract_args()
-    ScrapeProcessor(args.input)
+    mailbox = MailboxReader(args.input)
+    DatabaseCreator(mailbox.extracted_mails)
     database = DatabaseHandler()
     overall = database.length
 

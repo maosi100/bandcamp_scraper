@@ -1,6 +1,8 @@
 import mailbox
 import email
 from email import policy
+from email import message
+from typing import Optional, Dict
 
 from email_decoder import EmailDecoder
 
@@ -10,12 +12,13 @@ class MailboxReader():
         self.extracted_mails = []
         self.extract_emails()
 
-    def connect_mailbox(self, filepath: str) -> mailbox.mbox:
-        if not filepath.endswith('.mbox'):
-            try:
-               return mailbox.mbox(filepath, factory=self._factory_EmailMessage)
-            except IsADirectoryError:
-                raise IsADirectoryError(f"{filepath} is a directory")
+    def connect_mailbox(self, filepath: str) -> Optional[mailbox.mbox]:
+        if not filepath.endswith('mbox'):
+            raise ValueError(f"{filepath} is not an mbox file")
+        try:
+            return mailbox.mbox(filepath, factory=self._factory_EmailMessage)
+        except IsADirectoryError:
+            raise IsADirectoryError(f"{filepath} is a directory")
 
     @staticmethod
     def _factory_EmailMessage(file):
@@ -23,10 +26,21 @@ class MailboxReader():
 
     def extract_emails(self) -> None:
         self.extracted_mails = [
-            {"Date": mail["Date"], "Body": self._decode_mails(mail.get_body(preferencelist=('html')).as_string())}
-            for mail in self.mailbox
-            if "release" in mail["Subject"]
+            self.extract_body(mail)
+            for mail in self.mailbox if self.filter_mails(mail)
         ]
+
+    def extract_body(self, mail: message.EmailMessage) -> Optional[Dict]:
+        return {
+            "Date": mail["Date"],
+            "Body": self._decode_mails(
+                mail.get_body(preferencelist=('html')).as_string()
+            )
+        }
+
+    @staticmethod
+    def filter_mails(mail: message.EmailMessage) -> Optional[message.EmailMessage]:
+        return mail if "release" in mail["Subject"] else None
 
     def _decode_mails(self, mail: str) -> str:
         return EmailDecoder(mail).decode()

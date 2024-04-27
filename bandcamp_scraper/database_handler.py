@@ -2,8 +2,6 @@ import json
 from sys import exit
 from typing import Dict, Union
 
-from database_creator import DatabaseCreator
-
 class DatabaseHandler:
     def __init__(self) -> None:
         self.database = self.open_database()
