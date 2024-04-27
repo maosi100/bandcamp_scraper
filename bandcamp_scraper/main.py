@@ -1,9 +1,8 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
 
-from database_creator import DatabaseCreator
+from scrape_processor import ScrapeProcessor
 from database_handler import DatabaseHandler
-
 
 def extract_args() -> Namespace:
     parser = ArgumentParser(
@@ -23,7 +22,7 @@ def extract_args() -> Namespace:
 
 def main() -> None:
     args = extract_args()
-    DatabaseCreator(args.input)
+    ScrapeProcessor(args.input)
     database = DatabaseHandler()
     overall = database.length
 
