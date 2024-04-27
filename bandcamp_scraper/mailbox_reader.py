@@ -16,18 +16,17 @@ class MailboxReader():
                return mailbox.mbox(filepath, factory=self._factory_EmailMessage)
             except IsADirectoryError:
                 raise IsADirectoryError(f"{filepath} is a directory")
-    
+
     @staticmethod
     def _factory_EmailMessage(file):
         return email.message_from_binary_file(file, policy=policy.default)
 
     def extract_emails(self) -> None:
-        for mail in self.mailbox:
-            if "release" in mail["Subject"]:
-                my_dict = {}
-                my_dict["Date"] = mail["Date"]
-                my_dict["Body"] = self._decode_mails(mail.get_body(preferencelist=('html')).as_string())
-                self.extracted_mails.append(my_dict)
+        self.extracted_mails = [
+            {"Date": mail["Date"], "Body": self._decode_mails(mail.get_body(preferencelist=('html')).as_string())}
+            for mail in self.mailbox
+            if "release" in mail["Subject"]
+        ]
 
     def _decode_mails(self, mail: str) -> str:
         return EmailDecoder(mail).decode()
