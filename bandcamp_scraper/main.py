@@ -1,8 +1,7 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
 
-from mailbox_reader import MailboxReader
-from database_creator import DatabaseCreator
+from email_scraper import EmailScraper
 from database_handler import DatabaseHandler
 
 def extract_args() -> Namespace:
@@ -23,10 +22,12 @@ def extract_args() -> Namespace:
 
 def main() -> None:
     args = extract_args()
-    mailbox = MailboxReader(args.input)
-    DatabaseCreator(mailbox.extracted_mails)
+    
+    if args.input:
+        email_scraper = EmailScraper()
+        email_scraper.process(args.input)
+
     database = DatabaseHandler()
-    overall = database.length
 
     app = Flask(__name__)
 
@@ -38,7 +39,7 @@ def main() -> None:
             count = return_values[1]
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=overall)
+                return render_template("home.html", release=release, count=count, overall=database.length)
             else:
                 return render_template("exceeded.html")
 
