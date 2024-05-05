@@ -11,7 +11,7 @@ class EmailScraper():
 
     def process(self, filepath: str):
         if self.__read_mailbox_type(filepath):
-            mailbox = self.mailbox_initialiazer.connect_mailbox(filepath)
+            mailbox = self.mailbox_initialiazer.create_mailbox(filepath)
             extracted_mails = self.mailbox_reader.extract_emails(mailbox)
             self.database_creator.append_entries_to_database(extracted_mails)
 

@@ -1,6 +1,6 @@
 import mailbox
 from email import message
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 from email_decoder import EmailDecoder
 
@@ -8,7 +8,7 @@ class MailboxReader():
     def __init__(self) -> None:
         self.extracted_mails = []
 
-    def extract_emails(self, mailbox : mailbox.mbox) -> Optional[list[Dict]]:
+    def extract_emails(self, mailbox: List[message.EmailMessage]) -> Optional[list[Dict]]:
         self.extracted_mails = [
             self.extract_body(mail)
             for mail in mailbox if self.filter_mails(mail)

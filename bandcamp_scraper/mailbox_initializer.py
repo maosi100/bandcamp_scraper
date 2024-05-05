@@ -1,16 +1,24 @@
 from abc import ABC, abstractmethod
 import mailbox
 import email
+from email import message
 from email import policy
-from typing import Optional
+from typing import Optional, List
 
 class MailboxInitializer(ABC):
     @abstractmethod
-    def connect_mailbox(self, filepath: str):
+    def _conect_mailbox(self, filepath: str):
+        pass
+
+    def create_mailbox(self, filepath: str):
         pass
 
 class MboxMailboxInitializer(MailboxInitializer):
-    def connect_mailbox(self, filepath:str) -> Optional[mailbox.mbox]:
+    def create_mailbox(self, filepath: str) -> List[message.EmailMessage]:
+        mailbox = self._connect_mailbox(filepath)
+        return [mail for mail in mailbox]
+
+    def _connect_mailbox(self, filepath:str) -> Optional[mailbox.mbox]:
         try:
             return mailbox.mbox(filepath, factory=self._factory_EmailMessage)
         except IsADirectoryError:
