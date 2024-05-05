@@ -1,12 +1,12 @@
 from mailbox_initializer import MboxMailboxInitializer
-from mailbox_reader import MailboxReader
+from mailbox_reader import EmailReader
 from database_creator import DatabaseCreator
 
 class EmailScraper():
     def __init__(self) -> None:
         self.supported_mailbox_types = ["mbox"]
         self.mailbox_initialiazer = MboxMailboxInitializer()
-        self.mailbox_reader = MailboxReader()
+        self.mailbox_reader = EmailReader()
         self.database_creator = DatabaseCreator()
 
     def process(self, filepath: str):
