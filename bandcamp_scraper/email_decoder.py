@@ -1,7 +1,6 @@
 from base64 import b64decode
 from re import search
 
-
 class EmailDecoder():
     def __init__(self, mail: str):
         self.mail = mail
