@@ -1,19 +1,14 @@
 import json
 from sys import exit
-from typing import Dict, Union
-
-from database_creator import DatabaseCreator
+from typing import List, Dict, Union
 
 class DatabaseHandler:
-    def __init__(self, filepath: str) -> None:
-        if self._is_mbox_file(filepath):
-            DatabaseCreator(filepath)
-
+    def __init__(self) -> None:
         self.database = self.open_database()
         self.length = self.database[-1]["Count"]
 
     @staticmethod
-    def open_database() -> Dict:
+    def open_database() -> List[Dict]:
         try:
             with open("./database.json", "r") as file:
                 database_json = json.load(file)
@@ -44,8 +39,3 @@ class DatabaseHandler:
                 self.database[(count - 1)]["Flag"] = "0"
                 self.database[(count - 2)]["Flag"] = "0"
 
-    @staticmethod
-    def _is_mbox_file(filepath) -> bool:
-        if ".mbox" not in filepath:
-            raise ValueError("Could not retrieve .mbox file")
-        return True

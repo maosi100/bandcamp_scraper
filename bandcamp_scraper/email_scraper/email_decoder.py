@@ -1,8 +1,17 @@
 from base64 import b64decode
 from re import search
 
-
 class EmailDecoder():
+    def __init__(self, mail: str):
+        self.mail = mail
+
+    def decode(self) -> str:
+        if "base64" in self.mail:
+            self.mail = self.decode_base64(self.mail)
+        if "iso-8859-1" in self.mail:
+            self.mail = self.decode_iso8859(self.mail)
+        return self.mail
+    
     @staticmethod
     def decode_base64(email_body: str) -> str:
         stripped_body = search("^.+base64(.+)$", email_body.replace("\n", ""))

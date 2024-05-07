@@ -1,8 +1,8 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
 
+from email_scraper.email_scraper import EmailScraper
 from database_handler import DatabaseHandler
-
 
 def extract_args() -> Namespace:
     parser = ArgumentParser(
@@ -22,31 +22,41 @@ def extract_args() -> Namespace:
 
 def main() -> None:
     args = extract_args()
-    database = DatabaseHandler(args.input)
-    overall = database.length
+    
+    if args.input:
+        email_scraper = EmailScraper()
+        email_scraper.process(args.input)
+
+    database = DatabaseHandler()
 
     app = Flask(__name__)
 
     @app.route("/", methods=["GET", "POST"])
     def home():
         if request.method == "GET":
-            return_values = database.get_next_release()
-            release = return_values[0]
-            count = return_values[1]
+            release, count = database.get_next_release()
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=overall)
+                return render_template(
+                    "home.html",
+                    release=release,
+                    count=count,
+                    overall=database.length
+                )
             else:
                 return render_template("exceeded.html")
 
         if request.method == "POST":
             database.reset_processing_flag()
-            return_values = database.get_next_release()
-            release = return_values[0]
-            count = return_values[1]
+            release, count = database.get_next_release()
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=database.length)
+                return render_template(
+                    "home.html",
+                    release=release,
+                    count=count,
+                    overall=database.length
+                )
             else:
                 return render_template("exceeded.html")
 
