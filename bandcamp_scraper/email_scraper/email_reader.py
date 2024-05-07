@@ -1,7 +1,7 @@
 from email import message
 from typing import Optional, Dict, List
 
-from email_decoder import EmailDecoder
+from email_scraper.email_decoder import EmailDecoder
 
 class EmailReader():
     def __init__(self) -> None:

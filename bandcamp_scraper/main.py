@@ -1,7 +1,7 @@
 from argparse import ArgumentParser, Namespace
 from flask import Flask, render_template, request
 
-from email_scraper import EmailScraper
+from email_scraper.email_scraper import EmailScraper
 from database_handler import DatabaseHandler
 
 def extract_args() -> Namespace:

@@ -1,5 +1,5 @@
-from mailbox_initializer import MboxMailboxInitializer
-from email_reader import EmailReader
+from email_scraper.mailbox_initializer import MboxMailboxInitializer
+from email_scraper.email_reader import EmailReader
 from database_creator import DatabaseCreator
 
 class EmailScraper():
