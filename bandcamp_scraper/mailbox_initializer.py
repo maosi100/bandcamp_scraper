@@ -7,7 +7,7 @@ from typing import Optional, List
 
 class MailboxInitializer(ABC):
     @abstractmethod
-    def _conect_mailbox(self, filepath: str):
+    def connect_mailbox(self, filepath: str):
         pass
 
     def create_mailbox(self, filepath: str):
@@ -15,10 +15,10 @@ class MailboxInitializer(ABC):
 
 class MboxMailboxInitializer(MailboxInitializer):
     def create_mailbox(self, filepath: str) -> List[message.EmailMessage]:
-        mailbox = self._connect_mailbox(filepath)
+        mailbox = self.connect_mailbox(filepath)
         return [mail for mail in mailbox]
 
-    def _connect_mailbox(self, filepath:str) -> Optional[mailbox.mbox]:
+    def connect_mailbox(self, filepath:str) -> Optional[mailbox.mbox]:
         try:
             return mailbox.mbox(filepath, factory=self._factory_EmailMessage)
         except IsADirectoryError:

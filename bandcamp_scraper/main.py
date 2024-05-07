@@ -34,23 +34,29 @@ def main() -> None:
     @app.route("/", methods=["GET", "POST"])
     def home():
         if request.method == "GET":
-            return_values = database.get_next_release()
-            release = return_values[0]
-            count = return_values[1]
+            release, count = database.get_next_release()
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=database.length)
+                return render_template(
+                    "home.html",
+                    release=release,
+                    count=count,
+                    overall=database.length
+                )
             else:
                 return render_template("exceeded.html")
 
         if request.method == "POST":
             database.reset_processing_flag()
-            return_values = database.get_next_release()
-            release = return_values[0]
-            count = return_values[1]
+            release, count = database.get_next_release()
             
             if release:
-                return render_template("home.html", release=release, count=count, overall=database.length)
+                return render_template(
+                    "home.html",
+                    release=release,
+                    count=count,
+                    overall=database.length
+                )
             else:
                 return render_template("exceeded.html")
 

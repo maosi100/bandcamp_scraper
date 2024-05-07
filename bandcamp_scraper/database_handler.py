@@ -1,6 +1,6 @@
 import json
 from sys import exit
-from typing import Dict, Union
+from typing import List, Dict, Union
 
 class DatabaseHandler:
     def __init__(self) -> None:
@@ -8,7 +8,7 @@ class DatabaseHandler:
         self.length = self.database[-1]["Count"]
 
     @staticmethod
-    def open_database() -> Dict:
+    def open_database() -> List[Dict]:
         try:
             with open("./database.json", "r") as file:
                 database_json = json.load(file)
